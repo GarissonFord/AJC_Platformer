@@ -10,8 +10,10 @@ public class PlayerController : MonoBehaviour
 	//Tells us when the player is airborne 
 	public bool jump;
 
-	//So we can decide if a player can double jump
-	public bool doubleJump;
+	//So we can decide if a player can float
+	//Think Princess Peach in Super Mario Bros. 2
+	public bool floating;
+	public float timeFloating;
 
 	//i.e. Speed
 	public float moveForce;
@@ -22,14 +24,6 @@ public class PlayerController : MonoBehaviour
 
 	//Rigidbody2D reference
 	private Rigidbody2D rb;
-
-	//Reference to the bullet prefab and where to spawn it
-	public GameObject bullet;
-	public GameObject bulletSpawn;
-
-	//How fast a bullet can be fired
-	public float fireRate;
-	private float nextFire = 0.25f;
 
 	//To check when the player is touching the ground
 	public Transform groundCheck;
@@ -80,7 +74,7 @@ public class PlayerController : MonoBehaviour
 
 		if(grounded)
 		{
-			doubleJump = false;
+			floating = false;
 		}
 
 		if (jump) 
@@ -92,10 +86,15 @@ public class PlayerController : MonoBehaviour
 		}
 
 		//Double Jump
-		if (Input.GetButtonDown("Jump") && !grounded && !doubleJump) 
+		if (Input.GetButtonDown("Jump") && !grounded && !floating) 
 		{
-			rb.velocity = new Vector2 (rb.velocity.x, jumpForce);
-			doubleJump = true;
+			floating = true;
+		}
+
+		if (floating) 
+		{
+			StartFloating ();
+			Invoke ("StopFloating", timeFloating);
 		}
 	}
 
@@ -106,5 +105,15 @@ public class PlayerController : MonoBehaviour
 		Vector3 theScale = transform.localScale;
 		theScale.x *= -1;
 		transform.localScale = theScale;
+	}
+
+	void StartFloating()
+	{
+		rb.isKinematic = true;
+	}
+
+	void StopFloating()
+	{
+		rb.isKinematic = false;
 	}
 } 
