@@ -46,6 +46,8 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+     <Compile Include="Assets\DestroyByContact.cs" />
+     <Compile Include="Assets\Scripts\PlatformMove.cs" />
      <Compile Include="Assets\Scripts\PlayerController.cs" />
      <Compile Include="Assets\Scripts\SpawnController.cs" />
  <Reference Include="UnityEngine.UI">

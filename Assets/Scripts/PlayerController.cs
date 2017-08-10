@@ -10,17 +10,20 @@ public class PlayerController : MonoBehaviour
 	//Tells us when the player is airborne 
 	public bool jump;
 
-	//So we can decide if a player can float
-	//Think Princess Peach in Super Mario Bros. 2
-	public bool floating;
-	public float timeFloating;
-
 	//i.e. Speed
 	public float moveForce;
 	public float maxSpeed;
 
 	//Power of a jump
 	public float jumpForce;
+
+	//Number of small "double" jumps that can be performed after a single jump
+	//Think Flappy Bird or the old Helicopter browser game
+	public int maxNumSecondJumps;
+	//How many the player has currently taken
+	public int numSecondJumpsTaken;
+
+	public bool secondaryJumped;
 
 	//Rigidbody2D reference
 	private Rigidbody2D rb;
@@ -47,6 +50,11 @@ public class PlayerController : MonoBehaviour
 			grounded = false;
 			jump = true;
 		}
+
+		if (Input.GetButtonDown ("Jump") && (!grounded) && (numSecondJumpsTaken < maxNumSecondJumps)) 
+		{
+			secondaryJumped = true;
+		}
 	}
 
 	void FixedUpdate()
@@ -72,29 +80,29 @@ public class PlayerController : MonoBehaviour
 		else if (h < 0 && facingRight)
 			Flip ();
 
-		if(grounded)
-		{
-			floating = false;
-		}
-
 		if (jump) 
 		{
 			//rb.AddForce(new Vector2(0f, jumpForce));
 			rb.velocity = new Vector2(rb.velocity.x, jumpForce);
 			jump = false;
-			//Debug.Log ("Jumped");
+			Debug.Log ("Jumped");
 		}
 
-		//Double Jump
-		if (Input.GetButtonDown("Jump") && !grounded && !floating) 
+		//Do a series of mini jumps
+		if (secondaryJumped)
 		{
-			floating = true;
+			//Do a significantly smaller jump
+			rb.velocity = new Vector2(rb.velocity.x, jumpForce * 0.5f);
+			//Increment the number of secondary jumps taken
+			numSecondJumpsTaken++;
+			secondaryJumped = false;
+			Debug.Log ("Secondary Jumped");
 		}
 
-		if (floating) 
+		if (grounded) 
 		{
-			StartFloating ();
-			Invoke ("StopFloating", timeFloating);
+			numSecondJumpsTaken = 0;
+			secondaryJumped = false;
 		}
 	}
 
@@ -105,15 +113,5 @@ public class PlayerController : MonoBehaviour
 		Vector3 theScale = transform.localScale;
 		theScale.x *= -1;
 		transform.localScale = theScale;
-	}
-
-	void StartFloating()
-	{
-		rb.isKinematic = true;
-	}
-
-	void StopFloating()
-	{
-		rb.isKinematic = false;
 	}
 } 
