@@ -7,27 +7,29 @@ public class SpawnController : MonoBehaviour
 
 	public int maxPlatforms = 20;
 	public GameObject platform;
+	//The horizontal distance range between each platform
+	/*
 	public float horizontalMin = 14f;
 	public float horizontalMax = 20f;
+	*/
+	//The vertical distance range between each platform
+	/* However, we're trying to create a "clamp" so the platforms don't spawn 
 	public float verticalMin = -6f;
 	public float verticalMax = 6f;
-
-	private Vector2 originPosition;
+	*/
 
 	// Use this for initialization
 	void Start () 
 	{
-		originPosition = transform.position;
 		Spawn ();
 	}
 
 	void Spawn()
 	{
-		for (int i = 0; i < maxPlatforms; i++) 
-		{
-			Vector2 randomPosition = originPosition + new Vector2 (Random.Range(horizontalMin, horizontalMax), Random.Range(verticalMin, verticalMax));
-			Instantiate (platform, randomPosition, Quaternion.identity);
-			originPosition = randomPosition;
-		}
+		//The random range allows variation in the vertical component of the platforms
+		Vector2 randomPosition = new Vector2 (25.0f, Random.Range(-9.0f, 5.0f));
+		Instantiate (platform, randomPosition, Quaternion.identity);
+
+		Invoke ("Spawn", 3.0f);
 	}
 }

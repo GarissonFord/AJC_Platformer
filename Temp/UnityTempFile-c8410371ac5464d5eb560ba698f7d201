@@ -86,6 +86,8 @@
 -define:UNITY_EDITOR_OSX
 -define:ENABLE_NATIVE_ARRAY_CHECKS
 -define:UNITY_TEAM_LICENSE
+'Assets/DestroyByContact.cs'
+'Assets/Scripts/PlatformMove.cs'
 'Assets/Scripts/PlayerController.cs'
 'Assets/Scripts/SpawnController.cs'
 -r:'/Applications/Unity/Unity.app/Contents/Mono/lib/mono/unity/System.Runtime.Serialization.dll'
