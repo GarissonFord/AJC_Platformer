@@ -32,12 +32,15 @@ public class PlayerController : MonoBehaviour
 	public Transform groundCheck;
 	public bool grounded;
 
+	Animator anim;
+
 	//Our GetAxis value for movement
 	public float h;
 
 	void Awake()
 	{
 		rb = GetComponent<Rigidbody2D> ();
+		anim = GetComponent<Animator> ();
 	}
 
 	void Update()
@@ -61,6 +64,15 @@ public class PlayerController : MonoBehaviour
 	{
 		h = Input.GetAxis ("Horizontal");
 
+		//Controls animations
+		if (h != 0) 
+		{
+			anim.SetBool ("isMoving", true);
+		} else 
+		{
+			anim.SetBool ("isMoving", false);
+		}
+
 		//The following two conditionals create a speed cap
 		if (h * rb.velocity.x < maxSpeed) 
 		{
@@ -80,7 +92,7 @@ public class PlayerController : MonoBehaviour
 		else if (h < 0 && facingRight)
 			Flip ();
 
-		if (jump) 
+		if (jump && !secondaryJumped) 
 		{
 			//rb.AddForce(new Vector2(0f, jumpForce));
 			rb.velocity = new Vector2(rb.velocity.x, jumpForce);
