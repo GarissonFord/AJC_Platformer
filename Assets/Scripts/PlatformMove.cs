@@ -18,6 +18,6 @@ public class PlatformMove : MonoBehaviour {
 		//Let's test this out...
 		rb = GetComponent<Rigidbody2D> ();
 		rb.velocity = new Vector2(-moveSpeed, rb.velocity.y);
-		Debug.Log (moveSpeed);
+		//Debug.Log (moveSpeed);
 	}
 }

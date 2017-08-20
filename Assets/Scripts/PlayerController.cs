@@ -65,12 +65,19 @@ public class PlayerController : MonoBehaviour
 		h = Input.GetAxis ("Horizontal");
 
 		//Controls animations
-		if (h != 0) 
+		if (h != 0 && grounded) 
 		{
 			anim.SetBool ("isMoving", true);
-		} else 
+		} 
+		else if(h == 0 && grounded)
 		{
 			anim.SetBool ("isMoving", false);
+		}
+
+		if (grounded) 
+		{
+			anim.SetBool ("jump", false);
+			anim.SetBool ("grounded", true);
 		}
 
 		//The following two conditionals create a speed cap
@@ -97,6 +104,8 @@ public class PlayerController : MonoBehaviour
 			//rb.AddForce(new Vector2(0f, jumpForce));
 			rb.velocity = new Vector2(rb.velocity.x, jumpForce);
 			jump = false;
+			anim.SetBool ("jump", true);
+			anim.SetBool ("grounded", false);
 			Debug.Log ("Jumped");
 		}
 
@@ -104,6 +113,7 @@ public class PlayerController : MonoBehaviour
 		if (secondaryJumped)
 		{
 			//Do a significantly smaller jump
+			anim.SetBool ("jump", true);
 			rb.velocity = new Vector2(rb.velocity.x, jumpForce * 0.5f);
 			//Increment the number of secondary jumps taken
 			numSecondJumpsTaken++;
