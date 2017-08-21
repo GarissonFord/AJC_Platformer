@@ -84,6 +84,11 @@ public class PlayerController : MonoBehaviour
 			anim.SetBool ("grounded", true);
 		}
 
+		if (!grounded) 
+		{
+			anim.SetBool ("grounded", false);
+		}
+
 		//The following two conditionals create a speed cap
 		if (h * rb.velocity.x < maxSpeed) 
 		{
