@@ -48,12 +48,13 @@ public class PlayerController : MonoBehaviour
 		//Uses a vertical linecast to see if the player is touching the ground
 		grounded = Physics2D.Linecast (transform.position, groundCheck.position, 1 << LayerMask.NameToLayer ("Ground"));
 
+		//First Jump
 		if (Input.GetButtonDown ("Jump") && grounded) 
 		{
-			grounded = false;
 			jump = true;
 		}
 
+		//Secondary Jumps
 		if (Input.GetButtonDown ("Jump") && (!grounded) && (numSecondJumpsTaken < maxNumSecondJumps)) 
 		{
 			secondaryJumped = true;
@@ -76,7 +77,10 @@ public class PlayerController : MonoBehaviour
 
 		if (grounded) 
 		{
+			numSecondJumpsTaken = 0;
+			secondaryJumped = false;
 			anim.SetBool ("jump", false);
+			anim.SetBool ("secondaryJump", false);
 			anim.SetBool ("grounded", true);
 		}
 
@@ -101,7 +105,6 @@ public class PlayerController : MonoBehaviour
 
 		if (jump && !secondaryJumped) 
 		{
-			//rb.AddForce(new Vector2(0f, jumpForce));
 			rb.velocity = new Vector2(rb.velocity.x, jumpForce);
 			jump = false;
 			anim.SetBool ("jump", true);
@@ -113,18 +116,12 @@ public class PlayerController : MonoBehaviour
 		if (secondaryJumped)
 		{
 			//Do a significantly smaller jump
-			anim.SetBool ("jump", true);
+			anim.SetBool("secondaryJump", true);
 			rb.velocity = new Vector2(rb.velocity.x, jumpForce * 0.5f);
 			//Increment the number of secondary jumps taken
 			numSecondJumpsTaken++;
 			secondaryJumped = false;
 			Debug.Log ("Secondary Jumped");
-		}
-
-		if (grounded) 
-		{
-			numSecondJumpsTaken = 0;
-			secondaryJumped = false;
 		}
 	}
 
