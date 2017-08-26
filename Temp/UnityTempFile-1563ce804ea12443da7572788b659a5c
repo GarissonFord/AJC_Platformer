@@ -88,6 +88,7 @@
 -define:UNITY_TEAM_LICENSE
 'Assets/Scripts/DestroyByContact.cs'
 'Assets/Scripts/GameController.cs'
+'Assets/Scripts/MenuScript.cs'
 'Assets/Scripts/PlatformMove.cs'
 'Assets/Scripts/PlayerController.cs'
 'Assets/Scripts/SpawnController.cs'

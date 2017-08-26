@@ -9,6 +9,7 @@ public class PlayerController : MonoBehaviour
 
 	//Tells us when the player is airborne 
 	public bool jump;
+	public AudioSource jumpAudio;
 
 	//i.e. Speed
 	public float moveForce;
@@ -40,6 +41,7 @@ public class PlayerController : MonoBehaviour
 	void Awake()
 	{
 		rb = GetComponent<Rigidbody2D> ();
+		jumpAudio = GetComponent<AudioSource> ();
 		anim = GetComponent<Animator> ();
 	}
 
@@ -114,6 +116,7 @@ public class PlayerController : MonoBehaviour
 			jump = false;
 			anim.SetBool ("jump", true);
 			anim.SetBool ("grounded", false);
+			jumpAudio.Play ();
 			Debug.Log ("Jumped");
 		}
 
@@ -126,6 +129,7 @@ public class PlayerController : MonoBehaviour
 			//Increment the number of secondary jumps taken
 			numSecondJumpsTaken++;
 			secondaryJumped = false;
+			jumpAudio.Play ();
 			Debug.Log ("Secondary Jumped");
 		}
 	}
