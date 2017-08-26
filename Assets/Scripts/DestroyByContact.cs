@@ -13,7 +13,7 @@ public class DestroyByContact : MonoBehaviour
 	public AudioClip death, gameOverAudio;
 	public AudioSource audio;
 
-	//public AudioSource gameOverAudio;
+	public GameController gameController;
 
 	void Start()
 	{
@@ -21,6 +21,8 @@ public class DestroyByContact : MonoBehaviour
 
 		gameOverText.text = "";
 		gameOverImage.SetActive (false);
+
+		gameController = FindObjectOfType<GameController> ();
 	}
 
 	void OnTriggerEnter2D(Collider2D other)
@@ -39,6 +41,7 @@ public class DestroyByContact : MonoBehaviour
 		//gameOverAudio.Play ();
 		audio.PlayOneShot(gameOverAudio);
 		gameOverImage.SetActive (true);
+		gameController.GameOver ();
 		gameOverText.text = "Restarting...";
 		Invoke("RestartGame", 6.0f);
 	}
